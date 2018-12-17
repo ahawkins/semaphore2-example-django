@@ -17,7 +17,6 @@ blocks:
           - sem-version python 3.7
           - pip install django
           - checkout
-          - ./manage.py migrate
       jobs:
         - name: Test
           commands:
