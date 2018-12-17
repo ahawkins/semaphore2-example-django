@@ -13,6 +13,7 @@ blocks:
       #     value: prod
       prologue:
         commands:
+          - sem-version python 3.7
           - sudo pip install django
           - checkout
           - ./manage.py migrate
