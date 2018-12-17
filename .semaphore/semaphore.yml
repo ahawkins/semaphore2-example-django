@@ -10,7 +10,7 @@ blocks:
     task:
       env_vars:
         - name: DJANGO_SETTINGS_MODULE
-          value: demo/ci
+          value: demo.ci
       prologue:
         commands:
           - sem-service start postgresql
