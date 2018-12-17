@@ -14,7 +14,7 @@ blocks:
       prologue:
         commands:
           - sem-version python 3.7
-          - sudo pip install django
+          - pip install django
           - checkout
           - ./manage.py migrate
       jobs:
