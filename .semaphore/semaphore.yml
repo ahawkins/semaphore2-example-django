@@ -13,7 +13,7 @@ blocks:
       #     value: prod
       prologue:
         commands:
-          - pip install django
+          - sudo pip install django
           - checkout
           - ./manage.py migrate
       jobs:
