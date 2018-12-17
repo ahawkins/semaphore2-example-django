@@ -19,4 +19,4 @@ blocks:
       jobs:
         - name: Test
           commands:
-            ./manage.py test
+            - ./manage.py test
