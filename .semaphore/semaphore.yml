@@ -13,9 +13,9 @@ blocks:
           value: demo.ci
       prologue:
         commands:
-          - sem-service start postgresql
+          - sem-service start postgres
           - sem-version python 3.7
-          - pip install django
+          - pip install django pyscopg2
           - checkout
       jobs:
         - name: Test
