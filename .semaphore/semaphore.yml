@@ -8,11 +8,12 @@ agent:
 blocks:
   - name: "Test"
     task:
-      # env_vars:
-      #   - name: APP_ENV
-      #     value: prod
+      env_vars:
+        - name: DJANGO_SETTINGS_MODULE
+          value: demo/ci
       prologue:
         commands:
+          - sem-service start postgresql
           - sem-version python 3.7
           - pip install django
           - checkout
