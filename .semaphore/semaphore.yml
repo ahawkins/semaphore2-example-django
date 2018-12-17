@@ -1,0 +1,22 @@
+version: v1.0
+name: First pipeline example
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: "Test"
+    task:
+      # env_vars:
+      #   - name: APP_ENV
+      #     value: prod
+      prologue:
+        commands:
+          - pip install django
+          - checkout
+          - ./manage.py migrate
+      jobs:
+        - name: Test
+          commands:
+            ./manage.py test
