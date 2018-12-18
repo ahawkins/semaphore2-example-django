@@ -6,7 +6,18 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: "Test"
+  - name: "Warm Cache"
+    task:
+      jobs:
+        - name: Cache pip downloads
+          commands:
+            - sem-version python 3.7
+            - checkout
+            - cache restore requirements-$(checksum requirements.txt)
+            - pip downloads --cache-dir .pip_cache -r requirements.txt
+            - cache store requirements-$(checksum requirements.txt) .pip_cache
+
+  - name: Test
     task:
       env_vars:
         - name: DJANGO_SETTINGS_MODULE
@@ -15,9 +26,25 @@ blocks:
         commands:
           - sem-service start postgres
           - sem-version python 3.7
-          - pip install django psycopg2
           - checkout
+          - cache restore requirements-$(checksum requirements.txt)
+          - pip install -r requirements.txt --cache-dir .pip_cache
       jobs:
-        - name: Test
+        # Add a new job for all apps in the project to test in parallel
+        - name: Posts App
           commands:
-            - ./manage.py test
+            - coverage run manage.py test posts
+            - coverage report
+
+  - name: Lint
+    task:
+      prologue:
+        commands:
+          - sem-version python 3.7
+          - checkout
+          - cache restore requirements-$(checksum requirements.txt)
+          - pip install -r requirements.txt --cache-dir .pip_cache
+      jobs:
+        - name: Project
+          commands:
+            - git ls-files | grep -V 'migrations' | grep -V 'settings.py' | xargs pylint
